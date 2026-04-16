@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-def evaluate_model(model_path, yaml_path):
+def evaluate_model(model_path, yaml_path, class_name="basketball"):
     model = YOLO(model_path)
 
     metrics = model.val(
@@ -10,14 +10,20 @@ def evaluate_model(model_path, yaml_path):
         iou=0.5
     )
 
-    precision = metrics.box.mp
-    recall = metrics.box.mr
-    map50 = metrics.box.map50
-    map5095 = metrics.box.map
+    # Get class index for "basketball"
+    names = model.names
+    class_idx = list(names.values()).index(class_name)
 
+    # Extract per-class metrics
+    precision = metrics.box.p[class_idx]
+    recall = metrics.box.r[class_idx]
+    map50 = metrics.box.ap50[class_idx]
+    map5095 = metrics.box.ap[class_idx]
+
+    # Compute F1
     f1 = 2 * (precision * recall) / (precision + recall + 1e-16)
 
-    print("\n=== FINAL TEST METRICS ===")
+    print(f"\n=== {class_name.upper()} TEST METRICS ===")
     print(f"Precision: {precision:.4f}")
     print(f"Recall: {recall:.4f}")
     print(f"F1 Score: {f1:.4f}")
@@ -25,6 +31,7 @@ def evaluate_model(model_path, yaml_path):
     print(f"mAP@0.5:0.95: {map5095:.4f}")
 
     return {
+        "Class": class_name,
         "Precision": precision,
         "Recall": recall,
         "F1": f1,
