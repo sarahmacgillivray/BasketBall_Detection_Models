@@ -7,7 +7,7 @@
 
 ## How to Run (YOLOv8n)
 
-This implementation uses separate Python scripts and is designed to run locally.
+This implementation uses separate Python scripts and is designed to run locally (we used VS Code).
 
 ---
 
@@ -42,7 +42,7 @@ This will create a dataset folder (e.g., `basketball-1/`) containing:
 - `test/`
 - `data.yaml`
 
-[Dataset] {https://universe.roboflow.com/eagle-eye/basketball-1zhpe/dataset/1/download/yolov8}
+[Dataset](https://universe.roboflow.com/eagle-eye/basketball-1zhpe/dataset/1/download/yolov8)
 ---
 
 ### 3. Train the Model
